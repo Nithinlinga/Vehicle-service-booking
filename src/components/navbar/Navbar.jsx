@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-6 z-30 mx-auto max-w-6xl px-4">
-      <div className="flex flex-wrap items-center justify-between rounded-xl bg-white/80 backdrop-blur-md shadow-md ring-1 ring-slate-200 dark:bg-slate-900/80 dark:ring-slate-700">
+      <div className="flex flex-wrap items-center justify-between rounded-xl bg-white/80 backdrop-blur-md shadow-md ring-1 ring-slate-200 dark:bg-slate-900/80 dark:ring-slate-700 transition-colors duration-700">
         <div className="flex flex-wrap items-center justify-between w-full px-6 py-4">
           {/* Left Links */}
           <div className="flex items-center gap-6 text-sm font-medium text-slate-700 dark:text-slate-200">
@@ -35,7 +35,7 @@ const Navbar = () => {
 
           {/* Right Links */}
           <div className="flex items-center gap-6 text-sm font-medium text-slate-700 dark:text-slate-200">
-            <Link to="/access-account" className="hover:text-cyan-600 dark:hover:text-cyan-400">Log in</Link>
+           {!isAuthenticated&& <Link to="/access-account" className="hover:text-cyan-600 dark:hover:text-cyan-400">Log in</Link>}
             <Link to="/contact" className="hover:text-cyan-600 dark:hover:text-cyan-400">Contact us</Link>
             {isAuthenticated && (
               <button
@@ -43,7 +43,7 @@ const Navbar = () => {
                 className="inline-flex items-center gap-1 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
               >
                 <IoMdPower size={20} />
-                <span className="hidden sm:inline">Logout</span>
+                <span className="hidden cursor-pointer sm:inline">Logout</span>
               </button>
             )}
             <ThemeToggle />

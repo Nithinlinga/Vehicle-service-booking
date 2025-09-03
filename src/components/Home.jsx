@@ -28,8 +28,8 @@ const Home = () => {
               </h1>
 
               <p className="mt-4 max-w-xl text-base text-slate-600 sm:text-lg dark:text-slate-300">
-                Book maintenance, repairs, and inspections at any Next‑Gen Service
-                Centre. Genuine parts, certified technicians, and same‑day turnarounds
+                Book maintenance, repairs, and inspections at any Next-Gen Service
+                Centre. Genuine parts, certified technicians, and same-day turnarounds
                 on most jobs.
               </p>
 

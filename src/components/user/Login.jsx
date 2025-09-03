@@ -37,12 +37,13 @@ const Login = () => {
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className=" text-white shadow-2xl rounded-xl p-10 w-96">
-                <h2 className="text-3xl font-bold mb-6 text-center text-green-500">{role} Login</h2>
+                <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent dark:from-cyan-400 dark:to-indigo-400">{role} Login</h2>
 
                 <form onSubmit={formik.handleSubmit} className="flex flex-col space-y-4">
-                    <input type="email" placeholder="Email" name='email' id='email' onChange={formik.handleChange} value={formik.values.email} className="p-3 rounded outline-1 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500" /><br /><br />
-                    <input type="password" placeholder="Password" name='password' id='password' onChange={formik.handleChange} value={formik.values.password} className="p-3 rounded outline-1 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500" /><br /><br />
-                    <button type="submit" disabled={formik.isSubmitting} className="bg-green-600 cursor-pointer  hover:bg-green-700 text-white py-3 rounded font-semibold transition duration-300">
+                    <input type="email" placeholder="Email" name='email' id='email' onChange={formik.handleChange} value={formik.values.email} className="p-3 rounded outline-1 text-black placeholder-gray-500 dark:outline-cyan-600 focus:outline-none focus:ring-2 focus:ring-green-500" /><br /><br />
+                    <input type="password" placeholder="Password" name='password' id='password' onChange={formik.handleChange} value={formik.values.password} className="p-3 rounded outline-1 text-black dark:outline-cyan-600 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500" /><br /><br />
+                    <button type="submit" disabled={formik.isSubmitting} className="inline-flex items-center justify-center rounded-md bg-cyan-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-600/30 transition hover:-translate-y-0.5 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                >
                         {formik.isSubmitting ? 'Submitting...' : 'Submit'}
                     </button><br /><br />
                 </form>
