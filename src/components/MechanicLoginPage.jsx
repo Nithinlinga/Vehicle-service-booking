@@ -11,8 +11,8 @@ const MechanicLoginPage = () => {
      <div className="flex items-center justify-center min-h-screen">
         <div className=" text-white shadow-2xl rounded-xl p-10 w-96">
             <h2 className="text-2xl font-bold mb-1 text-center text-green-500">For Mechanics</h2>
-            <p className=" mb-6 text-center text-black">Thousands of mechanics have switched to a better way to work. They're building their 
-              skills, reputation, and careers</p>
+            <p className=" mb-6 text-center mt-4 max-w-xl text-base text-slate-600 sm:text-lg dark:text-slate-300">Thousands of mechanics have switched to a better way to work. They're building their 
+              skills, reputation</p>
  
             <form className="flex flex-col space-y-4">
                 <button type="submit" onClick={handleClick} className="bg-green-600 cursor-pointer  hover:bg-green-700 text-white py-3 rounded font-semibold transition duration-300">

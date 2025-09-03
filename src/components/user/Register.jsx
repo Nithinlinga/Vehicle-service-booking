@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
+
 const Register = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
@@ -33,14 +34,43 @@ const Register = () => {
             } finally {
                 setSubmitting(false);
             }
+        },
+        validate: values=>{
+            const errors={}
+            if(!values.email){
+                errors.email="Email required"
+            }
+            else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)){
+                errors.email = 'Invalid email address';
+            }
+            if(!values.username){
+                errors.username="Username required"
+            }
+            else if (['admin', 'null', 'god'].includes(values.username)) {
+                errors.username = 'Nice try';
+            }
+            else if(!/^[a-z]+$/.test(values.username)){
+                errors.username="Must contain only lowercase letters"
+                
+            }
+            else if(!/^.{8,}$/.test(values.username)){
+                errors.username="Must be at least 8 characters long"
+            }
+            else if(!/^.{0,50}$/.test(values.username)){
+                errors.username="Cannot be more than 50 characters"
+
+            }
+            return errors;
         }
     })
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen ">
+        <div className="flex dark:to-slate-900 flex-col items-center justify-center min-h-screen ">
             <div className=" text-white shadow-2xl rounded-xl p-10 w-3/4">
                 <h2 className="text-2xl text-green-500 font-bold mb-6 text-center">Sign Up</h2>
 
                 <form onSubmit={formik.handleSubmit} className="grid grid-cols-2 space-y-5 space-x-5">
+                    <div className="grid">
+
                     <input
                         type="email"
                         name="email"
@@ -51,6 +81,10 @@ const Register = () => {
                         className="p-3 rounded outline-1 text-black
                         placeholder-gray-500 focus:outline-none focus:ring-2
                         focus:ring-green-500" />
+                        {formik.errors.email && <span className=" text-red-600">{formik.errors.email}</span>}
+                        </div>
+                        <div className="grid">
+
                     <input
                         type="text"
                         placeholder="Username"
@@ -60,6 +94,8 @@ const Register = () => {
                         value={formik.values.username}
                         className="p-3 rounded outline-1 text-black placeholder-gray-500 
                         focus:outline-none focus:ring-2 focus:ring-green-500" />
+                        {formik.errors.username && <span className=" text-red-600">{formik.errors.username}</span>}
+                        </div>
                     <input
                         type="password"
                         placeholder="Password"
