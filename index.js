@@ -15,6 +15,7 @@ app.get('/register', (req, res) => {
     res.json(result);
   });
 });
+
 app.post('/register', (req, res) => {
   const { username,email,password,role} = req.body;
   db.query('INSERT INTO auth (username,email,password,role) VALUES (?, ?, ?,?)', [username,email,password,role],(err, result) => {
@@ -230,6 +231,204 @@ app.delete('/users/:userId', (req, res) => {
   });
 });
 
+//vehicles 
+
+app.post('/vehicles', (req, res) => {
+  const { userId, registration_number, make, model, year } = req.body;
+
+  // Step 1: Check if userId exists in users table
+  db.query('SELECT * FROM users WHERE userId = ?', [userId], (err, userResult) => {
+    if (err) return res.status(500).send({ message: 'Error checking userId' });
+
+    if (userResult.length === 0) {
+      return res.status(400).send({ message: 'Invalid userId. Please register the user first.' });
+    }
+
+    // Step 2: Insert vehicle if user exists
+    db.query(
+      'INSERT INTO vehicles (userId, registration_number, make, model, year) VALUES ( ?, ?, ?, ?, ?)',
+      [userId, registration_number, make, model, year],
+      (err, result) => {
+        if (err) {
+          if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(400).send({ message: 'Registration number already exists' });
+          }
+          return res.status(500).send(err);
+        }
+
+        res.status(201).json({
+          vehicleId: result.insertId,
+          userId,
+          registration_number,
+          make,
+          model,
+          year
+        });
+      }
+    );
+  });
+});
+
+// GET: All vehicles by userId
+app.get('/vehicles/:userId', (req, res) => {
+  db.query('SELECT * FROM vehicles WHERE userId = ?', [req.params.userId], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+//GET
+app.get('/vehicles', (req, res) => {
+  db.query('SELECT * FROM vehicles',  (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+
+// GET: Vehicle details by registration number
+app.get('/vehicles/:registration_number', (req, res) => {
+  db.query('SELECT * FROM vehicles WHERE registration_number = ?', [req.params.registration_number], (err, result) => {
+    if (err) return res.status(500).send(err);
+    if (result.length === 0) return res.status(404).send('Vehicle not found');
+    res.json(result[0]);
+  });
+});
+
+// PATCH: Update vehicle details by registration number
+app.patch('/vehicles/:registration_number', (req, res) => {
+  const { make, model, year, color } = req.body;
+  db.query(
+    'UPDATE vehicles SET make = ?, model = ?, year = ? WHERE registration_number = ?',
+    [make, model, year, req.params.registration_number],
+    (err, result) => {
+      if (err) return res.status(500).send(err);
+      if (result.affectedRows === 0) return res.status(404).send('Vehicle not found');
+      res.sendStatus(200);
+    }
+  );
+});
+
+// PUT: Edit vehicle by vehicleId
+app.put('/vehicles/:vehicleId', (req, res) => {
+  const { registration_number, make, model, year} = req.body;
+
+  db.query(
+    'UPDATE vehicles SET registration_number = ?, make = ?, model = ?, year = ?WHERE vehicleId = ?',
+    [registration_number, make, model, year, req.params.vehicleId],
+    (err, result) => {
+      if (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+          return res.status(400).send({ message: 'Registration number already exists' });
+        }
+        return res.status(500).send(err);
+      }
+      if (result.affectedRows === 0) return res.status(404).send('Vehicle not found');
+      res.sendStatus(200);
+    }
+  );
+});
+
+// DELETE: Vehicle by vehicleId
+app.delete('/vehicles/:vehicleId', (req, res) => {
+  db.query('DELETE FROM vehicles WHERE vehicleId = ?', [req.params.vehicleId], (err, result) => {
+    if (err) return res.status(500).send(err);
+    if (result.affectedRows === 0) return res.status(404).send('Vehicle not found');
+    res.sendStatus(200);
+  });
+});
+
+//mechanic end points 
+
+// Create a new mechanic
+app.post('/mechanics', (req, res) => {
+  const { mechanicId, servicecenterId, name, expertise, availability, rating } = req.body;
+
+  db.query(
+    'INSERT INTO mechanic (mechanicId, servicecenterId, name, expertise, availability, rating) VALUES (?, ?, ?, ?, ?, ?)',
+    [mechanicId, servicecenterId, name, expertise, availability, rating],
+    (err, result) => {
+      if (err) return res.status(500).send({ message: 'Error inserting mechanic' });
+      res.status(201).json({ id: result.insertId, ...req.body });
+    }
+  );
+});
+
+// GET: All mechanics
+app.get('/mechanics', (req, res) => {
+  db.query('SELECT * FROM mechanic', (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+// GET: Mechanic by ID
+app.get('/mechanics/:id', (req, res) => {
+  db.query('SELECT * FROM mechanic WHERE id = ?', [req.params.id], (err, result) => {
+    if (err) return res.status(500).send(err);
+    if (result.length === 0) return res.status(404).send('Mechanic not found');
+    res.json(result[0]);
+  });
+});
+
+// DELETE: Mechanic by ID
+app.delete('/mechanics/:id', (req, res) => {
+  db.query('DELETE FROM mechanic WHERE id = ?', [req.params.id], (err, result) => {
+    if (err) return res.status(500).send(err);
+    if (result.affectedRows === 0) return res.status(404).send('Mechanic not found');
+    res.sendStatus(200);
+  });
+});
+
+// DELETE: All mechanics
+app.delete('/mechanics', (req, res) => {
+  db.query('DELETE FROM mechanic', (err) => {
+    if (err) return res.status(500).send(err);
+    res.send({ message: 'All mechanics deleted' });
+  });
+});
+
+// PUT: Update all fields by ID
+app.put('/mechanics/:id', (req, res) => {
+  const { mechanicId, servicecenterId, name, expertise, availability, rating } = req.body;
+  db.query(
+    'UPDATE mechanic SET mechanicId = ?, servicecenterId = ?, name = ?, expertise = ?, availability = ?, rating = ? WHERE id = ?',
+    [mechanicId, servicecenterId, name, expertise, availability, rating, req.params.id],
+    (err, result) => {
+      if (err) return res.status(500).send(err);
+      if (result.affectedRows === 0) return res.status(404).send('Mechanic not found');
+      res.sendStatus(200);
+    }
+  );
+});
+
+// PATCH: Update availability by ID
+app.patch('/mechanics/:id', (req, res) => {
+  const { availability } = req.body;
+  db.query(
+    'UPDATE mechanic SET availability = ? WHERE id = ?',
+    [availability, req.params.id],
+    (err, result) => {
+      if (err) return res.status(500).send(err);
+      if (result.affectedRows === 0) return res.status(404).send('Mechanic not found');
+      res.sendStatus(200);
+    }
+  );
+});
+
+// PATCH: Update rating by ID
+app.patch('/mechanics/:id', (req, res) => {
+  const { rating } = req.body;
+  db.query(
+    'UPDATE mechanic SET rating = ? WHERE id = ?',
+    [rating, req.params.id],
+    (err, result) => {
+      if (err) return res.status(500).send(err);
+      if (result.affectedRows === 0) return res.status(404).send('Mechanic not found');
+      res.sendStatus(200);
+    }
+  );
+});
 
 app.listen(3001, () => { console.log('Server running on http://localhost:3001'); });
 
