@@ -25,7 +25,7 @@ import { useEffect } from "react";
 import UnauthorizedPage from "./components/UnauthorizedPage";
 
 function App() {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user,role } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
   
     useEffect(() => {
@@ -34,7 +34,7 @@ function App() {
         dispatch(login(JSON.parse(storedUser)));
       }
     }, []);
-    console.log("user",user)
+    console.log("user details",role)
 
   return (
     <>

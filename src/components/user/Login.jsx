@@ -17,7 +17,7 @@ const Login = () => {
         initialValues:{
             email:'',
             password:'',
-            role:role
+            role:role.toLowerCase()
         },
         onSubmit: async (values, { setSubmitting }) => {
             try {

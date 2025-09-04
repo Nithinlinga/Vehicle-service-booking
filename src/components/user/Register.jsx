@@ -21,7 +21,7 @@ const Register = () => {
             username:'',
             password:'',
             confirmPassword:'',
-            role:role
+            role:role.toLowerCase()
         },
         onSubmit: async (values, { setSubmitting }) => {
             try {
@@ -35,6 +35,8 @@ const Register = () => {
                 setSubmitting(false);
             }
         },
+        validateOnBlur:false,
+        validateOnChange:false,
         validate: values=>{
             const errors={}
             if(!values.email){

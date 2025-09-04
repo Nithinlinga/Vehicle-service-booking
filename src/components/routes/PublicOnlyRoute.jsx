@@ -3,15 +3,14 @@ import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 function PublicOnlyRoute() {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
-
+  const { isAuthenticated, user,role } = useSelector((state) => state.auth);
   const dashboardPath =
-    user?.role === "admin"
+    role.toLowerCase() === "admin"
       ? "/admin-dashboard"
-      : user?.role === "mechanic"
+      : role.toLowerCase() === "mechanic"
       ? "/mechanic-dashboard"
       : "/user-dashboard";
-
+console.log(role.toLowerCase(),"role")
   return isAuthenticated ? <Navigate to={dashboardPath} replace /> : <Outlet />;
 }
 
