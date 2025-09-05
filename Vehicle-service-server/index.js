@@ -5,7 +5,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
  
-const db = mysql.createConnection({ host: 'localhost', user: 'root',  password: '123456', database: 'sb',});
+const db = mysql.createConnection({ host: 'localhost', user: 'root',  password: '19263543', database: 'sb',});
 db.connect(err => {  if (err) throw err;   console.log('Connected to MySQL'); });
  
 //Register Page 

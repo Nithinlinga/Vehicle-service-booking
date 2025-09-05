@@ -20,6 +20,7 @@ import PublicOnlyRoute from "./components/routes/PublicOnlyRoute";
 import { login } from "./store/authSlice";
 import { useEffect } from "react";
 import UnauthorizedPage from "./components/UnauthorizedPage";
+import Footer from './components/footer/Footer';
 
 function App() {
   const { isAuthenticated, user,role } = useSelector((state) => state.auth);
@@ -41,6 +42,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
         <Route path="/welcome" element={<WelcomeUser />} />
 
         {/* Public-only pages (redirect if already logged in) */}
@@ -78,6 +80,7 @@ function App() {
         <Route path="/unauthorized" element={<UnauthorizedPage/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </>
   );
 }

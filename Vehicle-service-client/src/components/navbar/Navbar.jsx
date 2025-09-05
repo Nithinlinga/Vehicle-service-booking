@@ -41,6 +41,7 @@ const Navbar = () => {
           {/* Right Links */}
           <div className="flex items-center gap-6 text-sm font-medium text-slate-700 dark:text-slate-200">
            {!isAuthenticated&& <Link to="/access-account" className="hover:text-cyan-600 dark:hover:text-cyan-400">Log in</Link>}
+           <Link to="/about" className="hover:text-cyan-600 dark:hover:text-cyan-400">About us</Link>
             <Link to="/contact" className="hover:text-cyan-600 dark:hover:text-cyan-400">Contact us</Link>
             {isAuthenticated && (
               <button

@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { login } from "../../store/authSlice";
+import LoginServices from '../services/LoginServices';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const Login = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setServerError("");
       try {
-        const response = await axios.post(`${api}/login`, values);
+        const response = await LoginServices.postLogin(values);
         // Update store & local storage
         dispatch(login(response.data.user));
         localStorage.setItem("auth", JSON.stringify(response.data.user));
