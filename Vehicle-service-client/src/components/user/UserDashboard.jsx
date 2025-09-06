@@ -41,7 +41,7 @@ const UserDashboard = () => {
         </video>
         <div className="relative z-10 text-center text-white p-2.5">
           <h2 className="text-[2.5rem] relative top-[270px] font-extrabold">
-            Imagine the possibilities <br />with Next-Gen Service Centre
+            Imagine the possibilities <br />with Xcelerate Auto
           </h2>
           <NavLink to="/appointment">
             <button className="inline-flex items-center justify-center rounded-md bg-cyan-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-600/30 transition hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 relative top-[300px] w-[280px] m-[14px]">
