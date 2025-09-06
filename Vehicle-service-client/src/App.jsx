@@ -21,6 +21,8 @@ import { login } from "./store/authSlice";
 import { useEffect } from "react";
 import UnauthorizedPage from "./components/UnauthorizedPage";
 import Footer from './components/footer/Footer';
+import Services from './components/user/Services';
+import Appointments from './components/user/Appointments';
 
 function App() {
   const { isAuthenticated, user,role } = useSelector((state) => state.auth);
@@ -73,6 +75,8 @@ function App() {
           {/* Regular user-only */}
           <Route element={<RoleRoute roles={['user']} />}>
             <Route path="/user-dashboard" element={<UserDashboard />} />
+            <Route path="/appointment" element={<Appointments />}/>
+            <Route path="/services" element={<Services />}/>
           </Route>
         </Route>
 
