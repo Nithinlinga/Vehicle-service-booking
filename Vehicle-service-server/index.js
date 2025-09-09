@@ -448,6 +448,109 @@ app.patch('/mechanics/:id', (req, res) => {
   );
 });
 
+
+
+//bookings
+
+// GET: All bookings
+app.get('/booking', (req, res) => {
+  db.query('SELECT * FROM booking', (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+// GET: Booking by ID
+app.get('/booking/:id', (req, res) => {
+  db.query('SELECT * FROM booking WHERE bookingId = ?', [req.params.id], (err, result) => {
+    if (err) return res.status(500).send(err);
+    if (result.length === 0) return res.status(404).send('Booking not found');
+    res.json(result[0]);
+  });
+});
+
+// GET: Bookings by User ID
+app.get('/booking/user/:userId', (req, res) => {
+  db.query('SELECT * FROM booking WHERE _userId = ?', [req.params.userId], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+// GET: Bookings by Vehicle ID
+app.get('/booking/vehicle/:vehicleId', (req, res) => {
+  db.query('SELECT * FROM booking WHERE vehicleId = ?', [req.params.vehicleId], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+// GET: Bookings by Service Center ID
+app.get('/booking/service/:serviceCenterId', (req, res) => {
+  db.query('SELECT * FROM booking WHERE serviceCenterId = ?', [req.params.serviceCenterId], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+// POST: Create new booking
+app.post('/booking', (req, res) => {
+  const { _userId, vehicleId, serviceCenterId, date, timeslot, status } = req.body;
+  db.query(
+    'INSERT INTO booking (_userId, vehicleId, serviceCenterId, date, timeslot, status, createdAt) VALUES (?, ?, ?, ?, ?, ?, NOW())',
+    [_userId, vehicleId, serviceCenterId, date, timeslot, status],
+    (err, result) => {
+      if (err) return res.status(500).send(err);
+      res.status(201).send({ bookingId: result.insertId });
+    }
+  );
+});
+
+// PUT: Update all fields by booking ID
+app.put('/booking/:id', (req, res) => {
+  const { _userId, vehicleId, serviceCenterId, date, timeslot, status } = req.body;
+  db.query(
+    'UPDATE booking SET _userId = ?, vehicleId = ?, serviceCenterId = ?, date = ?, timeslot = ?, status = ? WHERE bookingId = ?',
+    [_userId, vehicleId, serviceCenterId, date, timeslot, status, req.params.id],
+    (err, result) => {
+      if (err) return res.status(500).send(err);
+      if (result.affectedRows === 0) return res.status(404).send('Booking not found');
+      res.sendStatus(200);
+    }
+  );
+});
+
+// PATCH: Update status by booking ID
+app.patch('/booking/:id/status', (req, res) => {
+  const { status } = req.body;
+  db.query(
+    'UPDATE booking SET status = ? WHERE bookingId = ?',
+    [status, req.params.id],
+    (err, result) => {
+      if (err) return res.status(500).send(err);
+      if (result.affectedRows === 0) return res.status(404).send('Booking not found');
+      res.sendStatus(200);
+    }
+  );
+});
+
+// DELETE: Booking by ID
+app.delete('/booking/:id', (req, res) => {
+  db.query('DELETE FROM booking WHERE bookingId = ?', [req.params.id], (err, result) => {
+    if (err) return res.status(500).send(err);
+    if (result.affectedRows === 0) return res.status(404).send('Booking not found');
+    res.sendStatus(200);
+  });
+});
+
+// DELETE: All bookings
+app.delete('/booking', (req, res) => {
+  db.query('DELETE FROM booking', (err) => {
+    if (err) return res.status(500).send(err);
+    res.send({ message: 'All bookings deleted' });
+  });
+});
+
 app.listen(3001, () => { 
   console.log('Server running on http://localhost:3001'); 
 });
