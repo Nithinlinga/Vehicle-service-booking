@@ -15,6 +15,7 @@ import img9 from '../../assets/vehicleservicelist/9.jpg';
 import img10 from '../../assets/vehicleservicelist/10.jpg';
 import img11 from '../../assets/vehicleservicelist/11.jpg';
 import img12 from '../../assets/vehicleservicelist/12.jpg';
+import Scroller from './Scroller';
 
 const images = [
   [img1, img2, img3],
@@ -86,6 +87,12 @@ const UserDashboard = () => {
           ›
         </button>
       </div>
+    </div>
+
+    <div className="flex items-center justify-center bg-gray dark:bg-gray-900 text-gray-100">
+      {/* <Scroller speed="fast" /> */}
+      {/* <Scroller direction="left" speed="slow" /> */}
+      <Scroller />
     </div>
     </>
   )
